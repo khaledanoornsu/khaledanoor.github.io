@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khaleda Noor Hashem — ICT System Analyst & Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --gold: #b8922a;
+    --gold-light: #d4a843;
+    --teal: #1a4a4a;
+    --teal-light: #2a6b6b;
+    --muted: #7a7060;
+    --border: #d8cfc0;
+    --card-bg: #faf7f2;
+    --shadow: rgba(15,14,12,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 24px var(--shadow); }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--teal); text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+    position: relative; padding-bottom: 2px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* Hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--ink); border-radius: 2px; transition: 0.3s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; padding: 8rem 4rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -20%; right: -10%; width: 55vw; height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-label::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--teal);
+    margin-bottom: 0.4rem;
+  }
+  .hero-name strong { font-weight: 600; display: block; }
+  .hero-title {
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 1.8rem;
+  }
+  .hero-badges {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 2px; color: var(--muted); background: var(--card-bg);
+  }
+  .hero-summary {
+    font-size: 0.9rem; color: var(--muted); line-height: 1.8;
+    max-width: 480px; margin-bottom: 2.5rem;
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 0.85rem 2rem; background: var(--teal); color: #fff;
+    border: none; cursor: pointer; font-family: 'Sora', sans-serif;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .btn-outline {
+    padding: 0.85rem 2rem; background: transparent; color: var(--teal);
+    border: 1.5px solid var(--teal); cursor: pointer; font-family: 'Sora', sans-serif;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--teal); color: #fff; }
+
+  /* Hero visual */
+  .hero-visual {
+    display: flex; flex-direction: column; gap: 1.2rem; align-items: flex-end;
+  }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 1.5rem 2rem; width: 100%; max-width: 360px;
+    box-shadow: 4px 4px 0 var(--border);
+    animation: fadeUp 0.6s ease both;
+  }
+  .info-card:nth-child(2) { animation-delay: 0.1s; }
+  .info-card:nth-child(3) { animation-delay: 0.2s; }
+  .info-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .info-card-value {
+    font-size: 0.88rem; color: var(--ink); font-weight: 400;
+  }
+  .info-card-value a { color: var(--teal); text-decoration: none; }
+  .info-card-value a:hover { text-decoration: underline; }
+  .exp-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 600; color: var(--gold); line-height: 1;
+  }
+  .exp-text { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 5rem 4rem; }
+  .section-header {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 400; color: var(--teal);
+  }
+  .section-line {
+    flex: 1; height: 1px; background: var(--border); max-width: 300px;
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience-bg { background: var(--card-bg); }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 12px; top: 8px; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .timeline-item {
+    position: relative; padding-left: 3rem; margin-bottom: 3rem;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute; left: 6px; top: 6px;
+    width: 13px; height: 13px;
+    border: 2px solid var(--gold); background: var(--paper);
+    border-radius: 50%; z-index: 1;
+  }
+  .timeline-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.12em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .timeline-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; color: var(--teal);
+    margin-bottom: 0.15rem;
+  }
+  .timeline-company {
+    font-size: 0.78rem; color: var(--muted); font-weight: 600;
+    letter-spacing: 0.05em; margin-bottom: 1rem;
+  }
+  .timeline-bullets { list-style: none; }
+  .timeline-bullets li {
+    font-size: 0.85rem; color: #4a4540; line-height: 1.7;
+    padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+  }
+  .timeline-bullets li::before {
+    content: '—'; position: absolute; left: 0; color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 1.8rem; position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0; transform: translateY(20px);
+    animation: none;
+  }
+  .skill-card.visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s;
+  }
+  .skill-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px var(--shadow); }
+  .skill-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--gold);
+  }
+  .skill-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+  .skill-name {
+    font-weight: 600; font-size: 0.88rem; color: var(--teal);
+    margin-bottom: 0.5rem; letter-spacing: 0.02em;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+  .skill-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem; background: rgba(26,74,74,0.08);
+    color: var(--teal); border-radius: 2px;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-bg { background: var(--card-bg); }
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+  .edu-card {
+    border: 1px solid var(--border); padding: 2rem;
+    position: relative;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .edu-card.visible { opacity: 1; transform: translateY(0); }
+  .edu-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--teal-light));
+  }
+  .edu-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 600; color: var(--teal); margin-bottom: 0.3rem;
+  }
+  .edu-school { font-size: 0.82rem; font-weight: 600; color: var(--gold); margin-bottom: 0.2rem; }
+  .edu-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .edu-thesis { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+  /* ── CERTIFICATIONS ── */
+  .cert-list { display: flex; flex-direction: column; gap: 1rem; }
+  .cert-item {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 1.2rem 1.8rem; background: var(--card-bg); border: 1px solid var(--border);
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .cert-item.visible { opacity: 1; transform: translateX(0); }
+  .cert-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold);
+    min-width: 50px; text-align: center;
+  }
+  .cert-name { font-size: 0.88rem; font-weight: 600; color: var(--teal); }
+  .cert-issuer { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+
+  /* ── CONTACT ── */
+  .contact-bg { background: var(--teal); }
+  .contact-bg .section-title { color: var(--paper); }
+  .contact-bg .section-number { color: var(--gold-light); }
+  .contact-bg .section-line { background: rgba(245,240,232,0.2); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .contact-intro {
+    font-size: 1rem; color: rgba(245,240,232,0.75); line-height: 1.8; margin-bottom: 2rem;
+  }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .contact-icon {
+    width: 36px; height: 36px; background: rgba(184,146,42,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0; border: 1px solid rgba(184,146,42,0.3);
+  }
+  .contact-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em; color: var(--gold-light);
+    text-transform: uppercase; margin-bottom: 0.2rem;
+  }
+  .contact-value { font-size: 0.88rem; color: var(--paper); }
+  .contact-value a { color: var(--paper); }
+
+  /* References */
+  .ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .ref-card {
+    background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.12);
+    padding: 1.5rem;
+  }
+  .ref-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--paper); font-weight: 600; }
+  .ref-title { font-size: 0.75rem; color: rgba(245,240,232,0.6); line-height: 1.5; margin-top: 0.3rem; }
+  .ref-phone { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--gold-light); margin-top: 0.8rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-text { animation: fadeUp 0.7s ease 0.1s both; }
+  .hero-visual { animation: fadeUp 0.7s ease 0.3s both; }
+
+  /* ── MOBILE NAV ── */
+  .nav-mobile { display: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-mobile {
+      display: none; position: fixed; inset: 0; top: 60px;
+      background: rgba(245,240,232,0.98); backdrop-filter: blur(16px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2.5rem; z-index: 99;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 1rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--teal); text-decoration: none;
+    }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; gap: 3rem; }
+    .hero-visual { align-items: center; }
+    .info-card { max-width: 100%; }
+    section { padding: 4rem 2rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .section-header { flex-wrap: wrap; }
+    .section-line { display: none; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">KN<span>H</span></a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile" id="mobileMenu">
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#education" onclick="closeMobile()">Education</a>
+  <a href="#certifications" onclick="closeMobile()">Certifications</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <p class="hero-label">ICT Professional · Dhaka, Bangladesh</p>
+    <h1 class="hero-name">Khaleda<br><strong>Noor Hashem</strong></h1>
+    <p class="hero-title">ICT System Analyst &amp; Full Stack Developer</p>
+    <div class="hero-badges">
+      <span class="badge">B.Sc. CSC — North South University</span>
+      <span class="badge">MBA — Daffodil International University</span>
+      <span class="badge">JAIBB</span>
+    </div>
+    <p class="hero-summary">Experienced ICT and Core Banking professional with 13+ years at First Security Islami Bank PLC. Specialized in CBS operations, MIS analytics, full-stack development, and ICT governance.</p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="info-card">
+      <p class="info-card-label">Current Position</p>
+      <p class="info-card-value">Principal Officer<br>ICTD — CBS &amp; MIS Team<br>First Security Islami Bank PLC.</p>
+    </div>
+    <div class="info-card">
+      <div class="exp-number">13+</div>
+      <p class="exp-text">Years of professional experience in banking ICT</p>
+    </div>
+    <div class="info-card">
+      <p class="info-card-label">Contact</p>
+      <p class="info-card-value">
+        <a href="tel:+8801748277711">+880 1748 277 711</a><br>
+        <a href="mailto:khaleda.noor@yahoo.com">khaleda.noor@yahoo.com</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience-bg" id="experience">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Professional Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">July 2021 – Present · Principal Officer (Promoted Jan 2024)</p>
+      <h3 class="timeline-role">ICT System Analyst — CBS &amp; MIS Team</h3>
+      <p class="timeline-company">First Security Islami Bank PLC., Head Office, Dhaka</p>
+      <ul class="timeline-bullets">
+        <li>Managed Core Banking System operations including user access, system maintenance, UAT, vendor coordination, and project execution.</li>
+        <li>Developed MIS and analytical reports using PL/SQL and Crystal Reports to support business and stakeholder requirements.</li>
+        <li>Provided administrative, documentation, and presentation support for board reviews, compliance, and CBS-related activities.</li>
+        <li>Delivered customer and staff training and supported continuous ICT learning initiatives.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">July 2019 – June 2021 · Officer</p>
+      <h3 class="timeline-role">ICT Compliance Team</h3>
+      <p class="timeline-company">First Security Islami Bank PLC., ICTD, Dhaka</p>
+      <ul class="timeline-bullets">
+        <li>Maintained and monitored ICT policy guidelines per Bangladesh Bank requirements; updated Business Continuity and Disaster Recovery Plans.</li>
+        <li>Prepared regulatory reports: ICAAP, Core Risk Management, Quarterly Self-Assessment, CAMEL Rating, and BIBM yearly reports.</li>
+        <li>Maintained and updated job descriptions for all ICT officials and the ICT Organogram.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">Jan 2015 – June 2019 · Junior Officer (Promoted Jul 2017)</p>
+      <h3 class="timeline-role">Software Development Team</h3>
+      <p class="timeline-company">First Security Islami Bank PLC., ICTD, Dhaka</p>
+      <ul class="timeline-bullets">
+        <li>Designed and developed secure in-house applications using PHP, JavaScript, React.js, and MySQL.</li>
+        <li>Monitored and maintained deployed in-house applications.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">May 2012 – Dec 2014 · Trainee/Assistant Officer</p>
+      <h3 class="timeline-role">ICT Division — Mobile Banking</h3>
+      <p class="timeline-company">First Security Islami Bank PLC., Head Office, Dhaka</p>
+      <ul class="timeline-bullets">
+        <li>Planned and prepared transaction reports for Mobile Banking Systems.</li>
+        <li>Performed Core Banking System reconciliation and provided customer support for Mobile Financial Services.</li>
+        <li>Ensured accurate documentation and provided regular management updates.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Expertise &amp; Skills</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🏦</div>
+      <p class="skill-name">Core Banking Systems</p>
+      <p style="font-size:0.82rem;color:var(--muted)">CBS operational support, UAT, user access management, vendor coordination.</p>
+      <div class="skill-tags"><span class="skill-tag">CBS Ops</span><span class="skill-tag">UAT</span><span class="skill-tag">Vendor Mgmt</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <p class="skill-name">MIS &amp; Reporting</p>
+      <p style="font-size:0.82rem;color:var(--muted)">MIS and analytical report creation for business and regulatory needs.</p>
+      <div class="skill-tags"><span class="skill-tag">PL/SQL</span><span class="skill-tag">Crystal Reports</span><span class="skill-tag">Analytics</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">💻</div>
+      <p class="skill-name">Full-Stack Development</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Designing and building secure in-house web applications end-to-end.</p>
+      <div class="skill-tags"><span class="skill-tag">PHP</span><span class="skill-tag">React.js</span><span class="skill-tag">Angular.js</span><span class="skill-tag">Laravel</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🎨</div>
+      <p class="skill-name">Frontend Technologies</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Building responsive, modern interfaces with HTML, CSS, and JavaScript.</p>
+      <div class="skill-tags"><span class="skill-tag">HTML/CSS</span><span class="skill-tag">JavaScript</span><span class="skill-tag">Python</span><span class="skill-tag">CodeIgniter</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <p class="skill-name">Database Management</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Database design, administration, and querying for enterprise applications.</p>
+      <div class="skill-tags"><span class="skill-tag">Oracle</span><span class="skill-tag">MySQL</span><span class="skill-tag">PL/SQL</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🔒</div>
+      <p class="skill-name">ICT Governance &amp; Security</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Policy compliance, ISO 27001, Bangladesh Bank regulatory frameworks.</p>
+      <div class="skill-tags"><span class="skill-tag">ISO 27001</span><span class="skill-tag">CISA</span><span class="skill-tag">BCP/DRP</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📋</div>
+      <p class="skill-name">Project Management</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Issue tracking, sprint management, and team coordination for ICT projects.</p>
+      <div class="skill-tags"><span class="skill-tag">JIRA</span><span class="skill-tag">Redmine</span></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <p class="skill-name">CMS &amp; Web Platforms</p>
+      <p style="font-size:0.82rem;color:var(--muted)">Web development and content management for institutional websites.</p>
+      <div class="skill-tags"><span class="skill-tag">WordPress</span><span class="skill-tag">Joomla</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu-bg" id="education">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <p class="edu-degree">MBA in Finance</p>
+      <p class="edu-school">Daffodil International University</p>
+      <p class="edu-year">2013 – 2015</p>
+      <p class="edu-thesis">Thesis: Research on Mobile Financial Services of Bangladesh.</p>
+    </div>
+    <div class="edu-card">
+      <p class="edu-degree">B.Sc. in Computer Science</p>
+      <p class="edu-school">North South University</p>
+      <p class="edu-year">2004 – 2009</p>
+      <p class="edu-thesis">Thesis: Research on NSU Networking System.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Certifications &amp; Training</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="cert-list">
+    <div class="cert-item">
+      <span class="cert-year">2021</span>
+      <div>
+        <p class="cert-name">Oracle Database 12c: Administration Workshop</p>
+        <p class="cert-issuer">Oracle University · Oracle Certified Professional</p>
+      </div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-year">2020</span>
+      <div>
+        <p class="cert-name">Network Security Associate NSE1 &amp; NSE2</p>
+        <p class="cert-issuer">Fortinet</p>
+      </div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-year">2019</span>
+      <div>
+        <p class="cert-name">Certified Information System Auditor (CISA)</p>
+        <p class="cert-issuer">Professional Certification</p>
+      </div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-year">2019</span>
+      <div>
+        <p class="cert-name">PL/SQL and Crystal Reports Management</p>
+        <p class="cert-issuer">Professional Training</p>
+      </div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-year">2017</span>
+      <div>
+        <p class="cert-name">Web Design and Development</p>
+        <p class="cert-issuer">CSL Systems Ltd. · Foundation Training — FSIB Training Institute</p>
+      </div>
+    </div>
+    <div class="cert-item">
+      <span class="cert-year">2012</span>
+      <div>
+        <p class="cert-name">Tranzware Card Management System</p>
+        <p class="cert-issuer">ITCL · Internship — EXIM Bank Ltd. (2010)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-bg" id="contact">
+  <div class="section-header">
+    <span class="section-number" style="color:var(--gold-light)">05</span>
+    <h2 class="section-title">Contact &amp; References</h2>
+    <div class="section-line" style="background:rgba(245,240,232,0.15)"></div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <p class="contact-intro">Open to professional collaborations, consulting engagements, and knowledge-sharing opportunities in banking ICT and full-stack development.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <p class="contact-label">Phone</p>
+          <p class="contact-value"><a href="tel:+8801748277711">+880 1748 277 711</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <p class="contact-label">Email</p>
+          <p class="contact-value"><a href="mailto:khaleda.noor@yahoo.com">khaleda.noor@yahoo.com</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🏢</div>
+        <div>
+          <p class="contact-label">Office</p>
+          <p class="contact-value">House-12, Main Road, Block-A,<br>Bashundhara R/A, Dhaka 1229</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🏠</div>
+        <div>
+          <p class="contact-label">Residence</p>
+          <p class="contact-value">House #45, Road #13, Sector #10,<br>Uttara, Dhaka</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-light);margin-bottom:1.2rem;">Professional References</p>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <p class="ref-name">Md. Mushfiqur Rahman</p>
+          <p class="ref-title">CITO &amp; Head of ICTD<br>Standard Islami Bank PLC.</p>
+          <p class="ref-phone">01711 203 567</p>
+        </div>
+        <div class="ref-card">
+          <p class="ref-name">Mohammed Nasir</p>
+          <p class="ref-title">Managing Director &amp; Member<br>Bangladesh Garments Mfr. &amp; Exporters Association</p>
+          <p class="ref-phone">01819 221 418</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Khaleda Noor Hashem &nbsp;·&nbsp; ICT System Analyst &amp; Full Stack Developer &nbsp;·&nbsp; Dhaka, Bangladesh</p>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    mobileMenu.classList.remove('open');
+  }
+
+  // Intersection observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, entry.target.dataset.delay || 0);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  // Observe elements
+  document.querySelectorAll('.timeline-item').forEach((el, i) => {
+    el.dataset.delay = i * 120;
+    observer.observe(el);
+  });
+  document.querySelectorAll('.skill-card').forEach((el, i) => {
+    el.dataset.delay = i * 80;
+    observer.observe(el);
+  });
+  document.querySelectorAll('.edu-card').forEach((el, i) => {
+    el.dataset.delay = i * 150;
+    observer.observe(el);
+  });
+  document.querySelectorAll('.cert-item').forEach((el, i) => {
+    el.dataset.delay = i * 80;
+    observer.observe(el);
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--ink)' : '';
+    });
+  });
+</script>
+</body>
+</html>
